@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temporary SMS and OTP Receiver</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .highlight {
+            color: green;
+            font-weight: bold;
+        }
+        .generate-btn {
+            margin: 20px auto;
+            display: block;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .generate-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Temporary SMS Numbers and OTP Receiver</h1>
+    <button class="generate-btn" onclick="generateNumber()">Generate Random Number</button>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Temporary Number</th>
+                <th>Received OTP</th>
+            </tr>
+        </thead>
+        <tbody id="numberTable">
+            <!-- Numbers and OTPs will be dynamically inserted here -->
+        </tbody>
+    </table>
+
+    <script>
+        let counter = 0;
+
+        function generateNumber() {
+            // Generate a random 10-digit phone number formatted for India
+            const randomNumber = `+91${Math.floor(1000000000 + Math.random() * 9000000000)}`;
+            const table = document.getElementById("numberTable");
+
+            // Increment counter and create a new table row
+            counter++;
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${counter}</td>
+                <td>${randomNumber}</td>
+                <td class="highlight" id="otp-${counter}">Waiting...</td>
+            `;
+
+            table.appendChild(row);
+
+            // Simulate backend sending OTP after a random delay
+            setTimeout(() => {
+                receiveOTP(counter, Math.floor(1000 + Math.random() * 9000));
+            }, Math.random() * 5000 + 2000); // Random delay between 2-7 seconds
+        }
+
+        function receiveOTP(index, otp) {
+            // Update the OTP cell with the received OTP
+            const otpCell = document.getElementById(`otp-${index}`);
+            if (otpCell) {
+                otpCell.textContent = otp;
+                otpCell.style.color = "red";
+            }
+        }
+    </script>
+</body>
+</html>
