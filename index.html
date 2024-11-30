@@ -79,6 +79,7 @@
     <div id="otp-container" style="display:none;">
         <p id="generated-number"></p>
         <button onclick="generateOTP()">Generate OTP</button>
+        <button onclick="enterManualOTP()">Enter Manual OTP</button>
     </div>
     <div id="call-container" style="display:none;">
         <p>Click below to receive a call with your OTP.</p>
@@ -124,6 +125,19 @@
 
         // After simulating the call, generate OTP
         generateOTP();
+    }
+
+    // Function to manually enter OTP
+    function enterManualOTP() {
+        // Prompt user to manually input OTP
+        let manualOTP = prompt("Please enter the OTP manually:");
+        if (manualOTP) {
+            generatedOTP = manualOTP; // Set the manual OTP as the generated OTP
+            otpExpiryTime = new Date().getTime() + 5 * 60 * 1000; // Set expiry time for the manually entered OTP
+            document.getElementById('otp-container').style.display = 'none';
+            document.getElementById('otp-input-container').style.display = 'block';
+            document.getElementById('message').innerText = `Manual OTP entered for ${generatedPhoneNumber}. It will expire in 5 minutes.`;
+        }
     }
 
     // Function to verify OTP
