@@ -6,47 +6,65 @@
     <title>OTP Verification</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            padding: 0;
             margin: 0;
-            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
         .container {
-            background-color: white;
-            padding: 20px;
+            background-color: #fff;
+            width: 400px;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h2 {
+            font-size: 24px;
+            color: #333;
+        }
+        button {
+            padding: 12px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            margin: 0 auto;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
         }
         input[type="text"] {
             width: 100%;
             padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
+            margin: 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
         }
         .message {
             margin-top: 20px;
             font-size: 14px;
         }
         .error {
-            color: red;
+            color: #FF6F61;
         }
         .success {
-            color: green;
+            color: #28A745;
+        }
+        .call-btn {
+            background-color: #1E90FF;
+            margin-top: 10px;
+        }
+        .call-btn:hover {
+            background-color: #1C86EE;
         }
     </style>
 </head>
@@ -55,12 +73,16 @@
 <div class="container">
     <h2>OTP Verification</h2>
     <div id="phone-number-container">
-        <p>Click below to generate a phone number.</p>
+        <p>Click below to generate a phone number for OTP.</p>
         <button onclick="generatePhoneNumber()">Generate Phone Number</button>
     </div>
     <div id="otp-container" style="display:none;">
         <p id="generated-number"></p>
-        <button onclick="generateOTP()">Generate OTP for the Number</button>
+        <button onclick="generateOTP()">Generate OTP</button>
+    </div>
+    <div id="call-container" style="display:none;">
+        <p>Click below to receive a call with your OTP.</p>
+        <button class="call-btn" onclick="initiateCall()">Request OTP Call</button>
     </div>
     <div id="otp-input-container" style="display:none;">
         <label for="otp">Enter OTP:</label>
@@ -81,15 +103,27 @@
         document.getElementById('generated-number').innerText = `Generated Phone Number: ${generatedPhoneNumber}`;
         document.getElementById('phone-number-container').style.display = 'none';
         document.getElementById('otp-container').style.display = 'block';
+        document.getElementById('call-container').style.display = 'block';
     }
 
-    // Function to generate 5-digit OTP
+    // Function to generate OTP
     function generateOTP() {
         generatedOTP = Math.floor(10000 + Math.random() * 90000).toString(); // Generate a 5-digit OTP
         otpExpiryTime = new Date().getTime() + 5 * 60 * 1000; // OTP expires in 5 minutes
         document.getElementById('otp-container').style.display = 'none';
+        document.getElementById('call-container').style.display = 'none';
         document.getElementById('otp-input-container').style.display = 'block';
-        document.getElementById('message').innerText = `OTP sent for ${generatedPhoneNumber}. It will expire in 5 minutes.`;
+        document.getElementById('message').innerText = `OTP generated for ${generatedPhoneNumber}. It will expire in 5 minutes.`;
+    }
+
+    // Function to simulate initiating a call for OTP
+    function initiateCall() {
+        // Simulate OTP being delivered over a call
+        document.getElementById('message').innerText = `A call has been initiated to ${generatedPhoneNumber}. You will hear the OTP shortly.`;
+        document.getElementById('message').className = 'success';
+
+        // After simulating the call, generate OTP
+        generateOTP();
     }
 
     // Function to verify OTP
