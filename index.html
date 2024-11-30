@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin: 0 auto;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>OTP Verification</h2>
+    <div id="otp-container">
+        <p>Click below to receive your OTP.</p>
+        <button onclick="sendOTP()">Request OTP</button>
+    </div>
+    <div id="otp-input-container" style="display:none;">
+        <label for="otp">Enter OTP:</label>
+        <input type="text" id="otp" placeholder="Enter OTP">
+        <button onclick="verifyOTP()">Verify OTP</button>
+    </div>
+    <p class="message" id="message"></p>
+</div>
+
+<script>
+    let generatedOTP = null;
+    let otpExpiryTime = null;
+
+    // Function to generate random OTP
+    function generateOTP() {
+        return Math.floor(1000 + Math.random() * 9000).toString();
+    }
+
+    // Function to send OTP
+    function sendOTP() {
+        generatedOTP = generateOTP();
+        otpExpiryTime = new Date().getTime() + 5 * 60 * 1000; // OTP expires in 5 minutes
+        document.getElementById('otp-container').style.display = 'none';
+        document.getElementById('otp-input-container').style.display = 'block';
+        document.getElementById('message').innerText = `Your OTP is: ${generatedOTP}. It will expire in 5 minutes.`;
+    }
+
+    // Function to verify OTP
+    function verifyOTP() {
+        const enteredOTP = document.getElementById('otp').value;
+
+        if (new Date().getTime() > otpExpiryTime) {
+            document.getElementById('message').innerText = 'OTP has expired. Please request a new OTP.';
+            document.getElementById('message').className = 'error';
+        } else if (enteredOTP === generatedOTP) {
+            document.getElementById('message').innerText = 'OTP is valid! You have been verified.';
+            document.getElementById('message').className = 'success';
+            document.getElementById('otp-input-container').style.display = 'none';
+        } else {
+            document.getElementById('message').innerText = 'Invalid OTP. Please try again.';
+            document.getElementById('message').className = 'error';
+        }
+    }
+</script>
+
+</body>
+</html>
